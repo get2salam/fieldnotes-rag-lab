@@ -6,7 +6,6 @@ from typing import Dict, List, Optional, Tuple
 
 from .index import HybridIndex, IndexedChunk
 from .citation import Citation, build_citations
-from .tokenizer import tokenize, ngrams
 from .query_expansion import expand_query as _expand_query
 
 

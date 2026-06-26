@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-import string
 from typing import List, Set
 
 _PUNCTUATION_RE = re.compile(r"[^\w\s'-]")

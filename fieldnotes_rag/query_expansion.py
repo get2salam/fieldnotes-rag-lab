@@ -21,7 +21,7 @@ SYNONYMS: Dict[str, List[str]] = {
     "streamside": ["riparian", "bank", "waterside", "riverside", "creek-side"],
     "riffle": ["fast-water", "turbulent", "cascade", "rapid", "whitewater"],
     "pool": ["slow-water", "reach", "pond", "backwater"],
-    "crossing": ["ford", "traverse", "wade", "wading"],
+    "crossing": ["ford", "traverse", "wade", "wading", "stream-crossing"],
     "creek": ["stream", "brook", "burn", "run", "drainage"],
     "flood": ["high-water", "inundation", "surge", "spate"],
 
@@ -55,7 +55,6 @@ SYNONYMS: Dict[str, List[str]] = {
     "safety": ["hazard", "risk", "protocol", "precaution", "danger"],
     "hazard": ["danger", "risk", "threat", "caution"],
     "emergency": ["rescue", "incident", "accident", "sos"],
-    "crossing": ["ford", "traverse", "wading", "stream-crossing"],
 
     # Weather
     "weather": ["precipitation", "temperature", "wind", "conditions", "climate"],

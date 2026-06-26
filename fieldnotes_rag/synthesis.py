@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import textwrap
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 
 from .index import IndexedChunk
 from .citation import Citation, build_citations, format_sources_section

@@ -5,11 +5,10 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import List
 
 from .retriever import Retriever
-from .synthesis import Synthesizer, SynthesisResult
-from .tokenizer import tokenize
+from .synthesis import Synthesizer
 
 
 @dataclass
