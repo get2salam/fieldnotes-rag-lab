@@ -7,37 +7,7 @@ from typing import Dict, List, Optional, Tuple
 from .index import HybridIndex, IndexedChunk
 from .citation import Citation, build_citations
 from .tokenizer import tokenize, ngrams
-
-
-# Simple synonym expansion for common field-research terms
-SYNONYMS: Dict[str, List[str]] = {
-    "bird": ["avian", "passerine", "raptor", "waterfowl", "songbird", "shorebird"],
-    "birds": ["avian", "passerines", "raptors", "waterfowl", "songbirds"],
-    "stream": ["creek", "river", "riffle", "brook", "watercourse"],
-    "streamside": ["riparian", "bank", "waterside", "riverside", "creek-side"],
-    "plant": ["vegetation", "flora", "shrub", "herb", "species"],
-    "fish": ["salmonid", "trout", "salmon", "species"],
-    "record": ["log", "note", "document", "observe", "note"],
-    "dusk": ["twilight", "evening", "sunset", "crepuscular"],
-    "dawn": ["morning", "sunrise", "crepuscular", "early"],
-    "habitat": ["environment", "microhabitat", "ecosystem", "zone"],
-    "safety": ["hazard", "risk", "protocol", "precaution"],
-    "weather": ["precipitation", "temperature", "wind", "conditions"],
-    "observe": ["watch", "detect", "spot", "sight", "record", "monitor"],
-    "species": ["animal", "organism", "taxa", "vertebrate"],
-}
-
-
-def _expand_query(query: str) -> str:
-    """Expand query with synonyms to improve recall."""
-    tokens = tokenize(query, remove_stopwords=False)
-    extra: List[str] = []
-    for t in tokens:
-        syns = SYNONYMS.get(t.lower(), [])
-        extra.extend(syns)
-    if extra:
-        return query + " " + " ".join(extra)
-    return query
+from .query_expansion import expand_query as _expand_query
 
 
 def _deduplicate(
