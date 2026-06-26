@@ -68,5 +68,19 @@
     "expected_doc_ids": ["species_notes"],
     "expected_keywords": ["beaver", "gnawed", "stump"],
     "min_citations": 1
+  },
+  {
+    "query_id": "q11",
+    "query": "What taxa are used as bioindicators of stream water quality?",
+    "expected_doc_ids": ["macroinvertebrate_survey"],
+    "expected_keywords": ["stonefly", "mayfly", "caddisfly"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q12",
+    "query": "How do I assess EPT richness in a benthic invertebrate sample?",
+    "expected_doc_ids": ["macroinvertebrate_survey"],
+    "expected_keywords": ["EPT", "richness", "riffle"],
+    "min_citations": 1
   }
 ]
