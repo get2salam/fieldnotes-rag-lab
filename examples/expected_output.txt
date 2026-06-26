@@ -1,0 +1,71 @@
+FieldNotes RAG Lab — Sample Query Output
+=========================================
+
+This file shows representative output from the RAG pipeline on the sample corpus.
+All citations point to real passages in the field corpus files.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+QUERY: What should I record after seeing a streamside bird at dusk?
+
+ANSWER:
+For dusk observations, additionally record: light phase (civil twilight, nautical
+twilight, or darkness), visibility distance in metres, illumination source, and
+identification method (visual, auditory, or structural silhouette). For each dusk
+survey note the transition times — sunset, end of civil twilight, and end of
+nautical twilight [1]. At the observation point, approach from downstream to avoid
+disturbing the water surface. Crouch or sit to reduce silhouette against the sky.
+Maintain at least 10 m from bank edge for sensitive habitats [2]. Record the
+observation immediately; note species, sex, age class, exact microhabitat, and
+the bird's behaviour at time of observation [3].
+
+SOURCES:
+[1] Observation and Recording Protocol — Field Station Alpha
+    examples/field_corpus/observation_protocol.md (lines 43–87)
+    Excerpt: "For dusk observations, additionally record: - **Light phase:** Civil
+    twilight (sun 0–6° below horizon)..."
+
+[2] Observation and Recording Protocol — Field Station Alpha
+    examples/field_corpus/observation_protocol.md (lines 87–115)
+    Excerpt: "When recording observations at or near running water: ### Positioning
+    - Approach from downstream..."
+
+[3] Bird Sightings Log — Ridgeline Creek Trail
+    examples/field_corpus/bird_sightings.md (lines 67–80)
+    Excerpt: "After observing a streamside bird at dusk, the following data must
+    be recorded: 1. Species..."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+QUERY: What safety precautions should I take before a stream crossing?
+
+ANSWER:
+Before any stream crossing, check the gauge reading at R-4. Do not cross if the
+reading exceeds +0.40 m above baseline. The buddy system is mandatory — never
+cross alone. Undo your hip belt and loosen shoulder straps before entering the
+water. Use a stout pole on the upstream side for stability and cross only at
+designated fords [1]. After heavy rain (>15 mm in 12 hours), assume gauge is at
+Caution level even without a direct reading. Wait at least 6 hours after
+precipitation peak before crossing [2].
+
+SOURCES:
+[1] Field Safety Checklist — Ridgeline Creek Survey Operations
+    examples/field_corpus/safety_checklist.md (lines 54–80)
+    Excerpt: "Stream crossing hazard requires buddy system..."
+
+[2] Weather Observation Log — Field Station Alpha
+    examples/field_corpus/weather_observations.md (lines 77–96)
+    Excerpt: "After heavy rain (>15 mm in 12 hours), assume gauge is at Caution
+    level..."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EVALUATION SUMMARY (10 queries, sample corpus):
+
+  Recall@5:          0.950
+  MRR:               0.900
+  Citation accuracy: 1.000
+  Answer coverage:   0.483
+  Composite score:   0.854
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
