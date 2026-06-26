@@ -34,6 +34,9 @@ fieldnotes = "fieldnotes_rag.cli:main"
 where = ["."]
 include = ["fieldnotes_rag*"]
 
+[tool.setuptools.package-data]
+fieldnotes_rag = ["py.typed"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
