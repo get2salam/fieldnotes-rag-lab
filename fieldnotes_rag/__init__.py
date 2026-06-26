@@ -10,6 +10,8 @@ from .index import HybridIndex
 from .retriever import Retriever
 from .synthesis import Synthesizer
 from .evaluator import Evaluator
+from .exceptions import FieldNotesError, CorpusError, ConfigError, ChunkingError
+from .query_expansion import expand_query
 
 __all__ = [
     "Config",
@@ -19,4 +21,11 @@ __all__ = [
     "Retriever",
     "Synthesizer",
     "Evaluator",
+    # Exceptions
+    "FieldNotesError",
+    "CorpusError",
+    "ConfigError",
+    "ChunkingError",
+    # Query expansion
+    "expand_query",
 ]
