@@ -60,9 +60,11 @@ class TestChunker:
             assert c.end_line >= c.start_line
 
     def test_chunk_documents_multiple(self):
+        long_a = "Content for document A discusses birds and riparian habitat in great detail. " * 5
+        long_b = "Content for document B covers plants and weather observation protocols fully. " * 5
         docs = [
-            _make_doc("Content for document A with birds and riparian habitat.", "doc_a"),
-            _make_doc("Content for document B with plants and weather observations.", "doc_b"),
+            _make_doc(long_a, "doc_a"),
+            _make_doc(long_b, "doc_b"),
         ]
         chunks = self.chunker.chunk_documents(docs)
         doc_ids = {c.doc_id for c in chunks}
@@ -70,7 +72,12 @@ class TestChunker:
         assert "doc_b" in doc_ids
 
     def test_citation_format(self):
-        doc = _make_doc("Field observation of Cinclus mexicanus at riffle.")
+        long_text = (
+            "Field observation of Cinclus mexicanus at the riffle below the cascade. "
+            "The bird performed tail-bobbing behaviour and submerged into the current. "
+            "Observation made during civil twilight; visibility estimated at 15 metres."
+        )
+        doc = _make_doc(long_text)
         chunks = self.chunker.chunk_document(doc)
         assert len(chunks) >= 1
         citation = chunks[0].citation

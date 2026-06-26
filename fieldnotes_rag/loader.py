@@ -56,7 +56,8 @@ def _extract_inline_metadata(text: str) -> Dict[str, str]:
     """Extract bold-label metadata lines like **Location:** Ridgeline Creek."""
     result: Dict[str, str] = {}
     for match in _METADATA_LINE_RE.finditer(text):
-        result[match.group(1).strip()] = match.group(2).strip()
+        key = match.group(1).strip().rstrip(":")
+        result[key] = match.group(2).strip()
     return result
 
 
