@@ -1,0 +1,72 @@
+[
+  {
+    "query_id": "q01",
+    "query": "What should I record after seeing a streamside bird at dusk?",
+    "expected_doc_ids": ["bird_sightings", "observation_protocol"],
+    "expected_keywords": ["observation", "species", "record", "microhabitat"],
+    "min_citations": 2
+  },
+  {
+    "query_id": "q02",
+    "query": "Is it safe to cross the stream after heavy rain?",
+    "expected_doc_ids": ["safety_checklist", "weather_observations"],
+    "expected_keywords": ["crossing", "gauge", "rain"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q03",
+    "query": "What birds are common near fast-moving streams at dusk?",
+    "expected_doc_ids": ["bird_sightings"],
+    "expected_keywords": ["dipper", "dusk", "riffle"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q04",
+    "query": "What is the role of Red Alder in the riparian zone?",
+    "expected_doc_ids": ["plant_observations", "riparian_habitat"],
+    "expected_keywords": ["alder", "nitrogen", "canopy"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q05",
+    "query": "How does wind affect bird survey accuracy?",
+    "expected_doc_ids": ["weather_observations"],
+    "expected_keywords": ["wind", "detection", "survey"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q06",
+    "query": "What amphibians indicate high water quality in cold mountain streams?",
+    "expected_doc_ids": ["species_notes"],
+    "expected_keywords": ["tailed", "frog", "cold"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q07",
+    "query": "What field marks distinguish the Harlequin Duck from other waterfowl?",
+    "expected_doc_ids": ["bird_sightings"],
+    "expected_keywords": ["harlequin", "plumage", "chute"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q08",
+    "query": "What safety precautions should I take before a stream crossing?",
+    "expected_doc_ids": ["safety_checklist"],
+    "expected_keywords": ["buddy", "hip", "belt", "gauge"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q09",
+    "query": "How should I record microhabitat context for a wildlife observation?",
+    "expected_doc_ids": ["observation_protocol", "riparian_habitat"],
+    "expected_keywords": ["microhabitat", "habitat", "record"],
+    "min_citations": 1
+  },
+  {
+    "query_id": "q10",
+    "query": "What are the signs of beaver activity along a creek?",
+    "expected_doc_ids": ["species_notes"],
+    "expected_keywords": ["beaver", "gnawed", "stump"],
+    "min_citations": 1
+  }
+]
