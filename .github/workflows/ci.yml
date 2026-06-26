@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package and dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Syntax check (compile all modules)
+        run: python -m compileall fieldnotes_rag tests
+
+      - name: Run tests
+        run: python -m pytest -q --tb=short
+
+      - name: CLI smoke test — help
+        run: python -m fieldnotes_rag.cli --help
+
+      - name: CLI smoke test — ingest sample corpus
+        run: |
+          python -m fieldnotes_rag.cli ingest examples/field_corpus \
+            --index /tmp/test-index.json
+
+      - name: CLI smoke test — ask query
+        run: |
+          python -m fieldnotes_rag.cli ask \
+            "What should I record after seeing a streamside bird at dusk?" \
+            --index /tmp/test-index.json \
+            --top-k 3
+
+      - name: CLI smoke test — eval fixtures
+        run: |
+          python -m fieldnotes_rag.cli eval \
+            --index /tmp/test-index.json \
+            --fixtures examples/eval_fixtures.json
+
+      - name: CLI smoke test — stats
+        run: python -m fieldnotes_rag.cli stats --index /tmp/test-index.json
+
+      - name: CLI smoke test — export
+        run: |
+          python -m fieldnotes_rag.cli export \
+            --index /tmp/test-index.json \
+            --output /tmp/export.json
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install linting tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyflakes
+
+      - name: Check for undefined names with pyflakes
+        run: python -m pyflakes fieldnotes_rag/
