@@ -16,6 +16,40 @@ from .synthesis import Synthesizer
 from .evaluator import Evaluator
 
 
+# -----------------------------------------------------------------------
+# Argparse type validators
+# -----------------------------------------------------------------------
+
+def _positive_int(value: str) -> int:
+    """Argparse type: integer that must be >= 1."""
+    try:
+        n = int(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"expected a positive integer, got {value!r}"
+        )
+    if n < 1:
+        raise argparse.ArgumentTypeError(
+            f"must be >= 1, got {n}"
+        )
+    return n
+
+
+def _unit_float(value: str) -> float:
+    """Argparse type: float that must be in [0.0, 1.0]."""
+    try:
+        f = float(value)
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"expected a number between 0.0 and 1.0, got {value!r}"
+        )
+    if not (0.0 <= f <= 1.0):
+        raise argparse.ArgumentTypeError(
+            f"must be between 0.0 and 1.0, got {f}"
+        )
+    return f
+
+
 def _load_config(args: argparse.Namespace) -> Config:
     """Resolve Config from optional --config file + env vars + CLI flags."""
     config_file = getattr(args, "config", None)
@@ -107,6 +141,13 @@ def cmd_ingest(args: argparse.Namespace) -> None:
 
 def cmd_ask(args: argparse.Namespace) -> None:
     """Retrieve relevant passages and synthesise a cited answer."""
+    if not args.query.strip():
+        print(
+            "[error] Query must not be empty.\n"
+            "  Try: fieldnotes ask 'What birds live near fast-moving streams?'",
+            file=sys.stderr,
+        )
+        sys.exit(1)
     config = _load_config(args)
     index_path = args.index or config.index_path
     idx = _load_index(index_path)
@@ -232,26 +273,26 @@ def build_parser() -> argparse.ArgumentParser:
     p_ingest = sub.add_parser("ingest", help="Load and index a corpus directory")
     p_ingest.add_argument("corpus_dir", help="Path to directory with .md/.txt files")
     p_ingest.add_argument("--index", "-i", default=None, help="Output index file path")
-    p_ingest.add_argument("--chunk-size", type=int, default=None, dest="chunk_size",
-                          help="Max words per chunk (default: 200)")
-    p_ingest.add_argument("--chunk-overlap", type=int, default=None, dest="chunk_overlap",
-                          help="Overlap in words between chunks (default: 40)")
-    p_ingest.add_argument("--alpha", type=float, default=None,
-                          help="TF-IDF weight in hybrid score 0–1 (default: 0.6)")
+    p_ingest.add_argument("--chunk-size", type=_positive_int, default=None, dest="chunk_size",
+                          help="Max words per chunk, >= 1 (default: 200)")
+    p_ingest.add_argument("--chunk-overlap", type=_positive_int, default=None, dest="chunk_overlap",
+                          help="Overlap in words between chunks, >= 1 (default: 40)")
+    p_ingest.add_argument("--alpha", type=_unit_float, default=None,
+                          help="TF-IDF weight in hybrid score, 0.0–1.0 (default: 0.6)")
     p_ingest.add_argument("--config", "-C", default=None, metavar="FILE")
 
     # ask
     p_ask = sub.add_parser("ask", help="Ask a question and get a cited answer")
     p_ask.add_argument("query", help="Your question")
     p_ask.add_argument("--index", "-i", default=None, help="Index file path")
-    p_ask.add_argument("--top-k", "-k", type=int, default=None, dest="top_k",
-                       help="Number of passages to retrieve (default: 5)")
-    p_ask.add_argument("--min-score", type=float, default=None, dest="min_score",
-                       help="Minimum relevance score threshold (default: 0.0)")
+    p_ask.add_argument("--top-k", "-k", type=_positive_int, default=None, dest="top_k",
+                       help="Number of passages to retrieve, >= 1 (default: 5)")
+    p_ask.add_argument("--min-score", type=_unit_float, default=None, dest="min_score",
+                       help="Minimum relevance score threshold, 0.0–1.0 (default: 0.0)")
     p_ask.add_argument("--no-expand", action="store_true", dest="no_expand",
                        help="Disable query expansion / synonym lookup")
     p_ask.add_argument("--json", action="store_true", help="Output as JSON")
-    p_ask.add_argument("--width", type=int, default=80, help="Text wrap width (default: 80)")
+    p_ask.add_argument("--width", type=_positive_int, default=80, help="Text wrap width, >= 1 (default: 80)")
     p_ask.add_argument("--config", "-C", default=None, metavar="FILE")
 
     # eval
@@ -262,7 +303,8 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to evaluation fixtures JSON (default: examples/eval_fixtures.json)",
     )
     p_eval.add_argument("--index", "-i", default=None)
-    p_eval.add_argument("--top-k", type=int, default=None, dest="top_k")
+    p_eval.add_argument("--top-k", type=_positive_int, default=None, dest="top_k",
+                        help="Number of passages to retrieve, >= 1 (default: config)")
     p_eval.add_argument("--json", action="store_true", help="Output as JSON")
     p_eval.add_argument("--output", "-o", default=None, help="Save JSON report to file")
     p_eval.add_argument("--config", "-C", default=None, metavar="FILE")

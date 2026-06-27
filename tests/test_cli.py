@@ -119,3 +119,71 @@ class TestCLIIntegration:
         with pytest.raises(SystemExit) as exc_info:
             main(["ask", "query", "--index", str(tmp_path / "missing.json")])
         assert exc_info.value.code != 0
+
+    def test_ask_empty_query_exits(self, index_file):
+        with pytest.raises(SystemExit) as exc_info:
+            main(["ask", "   ", "--index", index_file])
+        assert exc_info.value.code != 0
+
+    def test_ask_blank_query_stderr(self, index_file, capsys):
+        with pytest.raises(SystemExit):
+            main(["ask", "", "--index", index_file])
+        err = capsys.readouterr().err
+        assert "empty" in err.lower()
+
+
+class TestInputValidation:
+    """Argparse type validators reject out-of-range inputs before dispatch."""
+
+    def setup_method(self):
+        self.parser = build_parser()
+
+    def test_top_k_zero_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ask", "query", "--top-k", "0"])
+
+    def test_top_k_negative_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ask", "query", "--top-k", "-3"])
+
+    def test_top_k_float_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ask", "query", "--top-k", "2.5"])
+
+    def test_alpha_above_one_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ingest", "dir", "--alpha", "1.5"])
+
+    def test_alpha_negative_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ingest", "dir", "--alpha", "-0.1"])
+
+    def test_alpha_boundary_values_accepted(self):
+        args = self.parser.parse_args(["ingest", "dir", "--alpha", "0.0"])
+        assert args.alpha == 0.0
+        args = self.parser.parse_args(["ingest", "dir", "--alpha", "1.0"])
+        assert args.alpha == 1.0
+
+    def test_min_score_above_one_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ask", "query", "--min-score", "2.0"])
+
+    def test_min_score_negative_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ask", "query", "--min-score", "-0.5"])
+
+    def test_min_score_valid_accepted(self):
+        args = self.parser.parse_args(["ask", "query", "--min-score", "0.5"])
+        assert args.min_score == 0.5
+
+    def test_chunk_size_zero_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ingest", "dir", "--chunk-size", "0"])
+
+    def test_width_zero_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["ask", "query", "--width", "0"])
+
+    def test_eval_top_k_negative_rejected(self):
+        with pytest.raises(SystemExit):
+            self.parser.parse_args(["eval", "--top-k", "-1"])
