@@ -165,6 +165,25 @@ See `docs/design.md` for the full rationale.
 
 ---
 
+## Troubleshooting
+
+If a query returns unexpected results, use the query diagnosis tool to see
+exactly how the hybrid score is computed and which terms are missing from the
+corpus:
+
+```bash
+python examples/explain_query.py \
+    --query "What salamanders live in cold mountain streams?" \
+    --corpus-dir examples/field_corpus
+```
+
+The tool prints the expanded query, token IDF values, and a per-result score
+breakdown into TF-IDF and hashed-cosine components.  See
+[docs/troubleshooting.md](docs/troubleshooting.md) for common failure modes and
+fixes.
+
+---
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
